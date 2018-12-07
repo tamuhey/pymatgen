@@ -629,6 +629,35 @@ class Element(Enum):
         return valence[0]
 
     @property
+    def num_valence_electrons(self):
+        """
+        Returns: (int) num of valence electrons
+        """
+        # the number of valence of noble gas is 0
+        if self.group == 18:
+            return 0
+
+        L_symbols = 'SPDFGHIKLMNOQRTUVWXYZ'
+        valence = 0
+        unfilled_subshells = []
+        full_electron_config = self.full_electronic_structure
+        max_quantum_n = full_electron_config[-1][0]
+
+        for quantum_n, l_symbol, ne in full_electron_config[::-1]:
+            l = L_symbols.lower().index(l_symbol)
+            if ne < (2 * l + 1) * 2:
+                unfilled_subshells.append((quantum_n, ne))
+            if quantum_n == max_quantum_n:
+                valence += ne
+
+        if len(unfilled_subshells) > 1:
+            for subshell in unfilled_subshells:
+                if subshell[0] != max_quantum_n:
+                    valence += subshell[1]
+        return valence
+
+
+    @property
     def term_symbols(self):
         """
         All possible  Russell-Saunders term symbol of the Element

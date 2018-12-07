@@ -72,6 +72,18 @@ class ElementTestCase(PymatgenTest):
         self.assertTrue(np.isnan(valence[0]))
         self.assertEqual(valence[1], 0)
 
+    def test_num_valence_electrons(self):
+        testsets = {"O": 6,
+                    "Fe": 2,
+                    "Li": 1,
+                    "He": 0,
+                    "Hg": 2, 
+                    "Cr": 6,
+                    "U": 6}
+
+        for k, v in testsets.items():
+            self.assertEqual(Element(k).num_valence_electrons, v)
+
     def test_term_symbols(self):
         testsets = {"Li": [['2S0.5']],  # s1
                     "C": [['1D2.0'],
